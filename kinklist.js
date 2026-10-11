@@ -222,12 +222,22 @@
     var viewingLink = false;
 
     function readStore(){
+        var store;
         try {
-            return JSON.parse(localStorage.getItem(STORE_KEY));
+            store = JSON.parse(localStorage.getItem(STORE_KEY));
         }
         catch(e) {
             return null;
         }
+        // Before version 2 the third and fourth ratings were Indifferent then Maybe
+        if(store && store.v !== 2) {
+            Object.keys(store.ratings).forEach(function(key){
+                if(store.ratings[key] === 3) store.ratings[key] = 4;
+                else if(store.ratings[key] === 4) store.ratings[key] = 3;
+            });
+            store.v = 2;
+        }
+        return store;
     }
 
     function ratingKey(g){
@@ -236,7 +246,7 @@
 
     function saveStore(){
         if(!$remember.checked || viewingLink) return;
-        var store = readStore() || { ratings: {} };
+        var store = readStore() || { v: 2, ratings: {} };
         groups.forEach(function(g){
             var value = g.kink.values[g.fi];
             if(value) store.ratings[ratingKey(g)] = value;

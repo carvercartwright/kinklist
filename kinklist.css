@@ -604,7 +604,7 @@ a.btn {
 }
 
 #Results {
-	columns: 34rem auto;
+	columns: 38rem auto;
 	column-gap: 1.25rem;
 	padding: 1.5rem clamp(.5rem, 3vw, 2.5rem) 4rem;
 }
@@ -617,7 +617,7 @@ a.btn {
 /* One row per item: its name, then the two ratings in fixed columns */
 .pair, .pair-head {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) 10.5rem 10.5rem;
+	grid-template-columns: minmax(0, 1fr) 12.5rem 12.5rem;
 	align-items: center;
 	gap: .1rem 1rem;
 }

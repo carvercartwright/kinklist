@@ -2,7 +2,7 @@
 var Kinklist = (function(){
     'use strict';
 
-    var LEVELS = ['Not entered', 'Favorite', 'Like', 'Indifferent', 'Maybe', 'Limit / Not interested'];
+    var LEVELS = ['Not entered', 'Favorite', 'Like', 'Interested', 'Indifferent', 'Limit / Not interested / N/A'];
     var LISTS = { classic: 'Classic', detailed: 'Detailed', plsno: "Please Don't" };
     var HASH_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.=+*^!@";
 
