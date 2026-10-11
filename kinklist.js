@@ -280,6 +280,7 @@
         catch(e) {
             location.hash = rated ? encode(values) : '';
         }
+        saveStore();
     }
 
     function parseHash(){
@@ -295,7 +296,90 @@
     }
 
     // Pasting a link into a tab that already has the page open
-    window.addEventListener('hashchange', parseHash);
+    window.addEventListener('hashchange', function(){
+        parseHash();
+        checkLink();
+    });
+
+    /* Remember on this device: opt-in, kept in this browser's local storage only */
+
+    var STORE_KEY = 'kinklist';
+    var $remember = byId('Remember');
+    // Text of an edited list, so it can be remembered too
+    var customText = null;
+    // True while showing ratings from someone else's link, so they never overwrite the saved ones
+    var viewingLink = false;
+
+    function readStore(){
+        try {
+            return JSON.parse(localStorage.getItem(STORE_KEY));
+        }
+        catch(e) {
+            return null;
+        }
+    }
+
+    function ratingKey(g){
+        return [g.cat.name, g.kink.name, g.cat.fields[g.fi]].join('\n');
+    }
+
+    function saveStore(){
+        if(!$remember.checked || viewingLink) return;
+        var store = readStore() || { ratings: {} };
+        groups.forEach(function(g){
+            var value = g.kink.values[g.fi];
+            if(value) store.ratings[ratingKey(g)] = value;
+            else delete store.ratings[ratingKey(g)];
+        });
+        store.list = $listType.value;
+        store.custom = customText;
+        try {
+            localStorage.setItem(STORE_KEY, JSON.stringify(store));
+        }
+        catch(e) {}
+    }
+
+    function applyStore(store){
+        groups.forEach(function(g){
+            g.kink.values[g.fi] = store.ratings[ratingKey(g)] || 0;
+            paint(g);
+        });
+        updateTally();
+    }
+
+    function checkLink(){
+        var store = $remember.checked && readStore();
+        viewingLink = !!store && location.hash.length > 10 && groups.some(function(g){
+            return g.kink.values[g.fi] !== (store.ratings[ratingKey(g)] || 0);
+        });
+        byId('LinkNotice').hidden = !viewingLink;
+    }
+
+    $remember.addEventListener('change', function(){
+        viewingLink = false;
+        byId('LinkNotice').hidden = true;
+        if($remember.checked) saveStore();
+        else localStorage.removeItem(STORE_KEY);
+    });
+    byId('LinkBack').addEventListener('click', function(){
+        viewingLink = false;
+        byId('LinkNotice').hidden = true;
+        applyStore(readStore());
+        updateUrl();
+    });
+    byId('LinkKeep').addEventListener('click', function(){
+        viewingLink = false;
+        byId('LinkNotice').hidden = true;
+        saveStore();
+    });
+
+    try {
+        localStorage.setItem(STORE_KEY + '-test', '1');
+        localStorage.removeItem(STORE_KEY + '-test');
+    }
+    catch(e) {
+        byId('RememberLabel').hidden = true;
+    }
 
     /* Choosing a list */
 
@@ -309,6 +393,7 @@
 
     $listType.addEventListener('change', function(){
         loadList($listType.value).then(function(text){
+            customText = null;
             setList(parseKinksText(text));
             updateUrl();
         }).catch(function(e){
@@ -333,6 +418,7 @@
             byId('EditError').textContent = e.message;
             return;
         }
+        customText = byId('Kinks').value;
         updateUrl();
         $edit.close();
     });
@@ -795,7 +881,11 @@
 
     /* Start */
 
-    var requested = new URLSearchParams(location.search).get('list');
+    var store = readStore();
+    $remember.checked = !!store;
+
+    // A link says which list it is for; otherwise go back to the remembered one
+    var requested = new URLSearchParams(location.search).get('list') || (store && !location.hash ? store.list : '');
     if($listType.querySelector('option[value="' + CSS.escape(requested || '') + '"]')) {
         $listType.value = requested;
     }
@@ -803,8 +893,23 @@
         $listType.value = 'classic';
         return loadList('classic');
     }).then(function(text){
-        cats = parseKinksText(text);
+        if(store && store.custom && store.list === $listType.value) {
+            try {
+                cats = parseKinksText(store.custom);
+                customText = store.custom;
+            }
+            catch(e) {}
+        }
+        if(!customText) cats = parseKinksText(text);
         render();
-        parseHash();
+
+        if(location.hash.length > 10) {
+            parseHash();
+            checkLink();
+        }
+        else if(store) {
+            applyStore(store);
+            updateUrl();
+        }
     });
 })();
