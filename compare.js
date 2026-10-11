@@ -172,7 +172,10 @@
         cats = Kinklist.parseKinksText(text);
         layout = Kinklist.slots(cats, baseName);
         var hashes = readHash();
-        sides = { a: Kinklist.decode(hashes.a), b: Kinklist.decode(hashes.b) };
+        sides = {
+            a: Kinklist.mergeValues(Kinklist.decode(hashes.a), baseName),
+            b: Kinklist.mergeValues(Kinklist.decode(hashes.b), baseName)
+        };
 
         byId('ListName').textContent = (Kinklist.LISTS[listName] || 'Edited') + ' list';
         byId('BackLink').href = 'index.html' + (Kinklist.LISTS[listName] && listName !== 'classic' ? '?list=' + listName : '') + '#' + hashes.a;

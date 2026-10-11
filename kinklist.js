@@ -211,7 +211,7 @@
         var hash = location.hash.substring(1);
         if(hash.length < 10) return;
 
-        var values = decode(hash);
+        var values = Kinklist.mergeValues(decode(hash), $listType.value);
         groups.forEach(function(g){
             g.kink.values[g.fi] = values[g.slot] || 0;
             paint(g);
@@ -274,9 +274,18 @@
         catch(e) {}
     }
 
+    // A saved rating, falling back to one given to a duplicate that has since been removed
+    function storedRating(store, g, merged){
+        var key = ratingKey(g);
+        if(store.ratings[key]) return store.ratings[key];
+        var from = (merged[key] || []).find(function(old){ return store.ratings[old]; });
+        return from ? store.ratings[from] : 0;
+    }
+
     function applyStore(store){
+        var merged = Kinklist.mergedKeys($listType.value);
         groups.forEach(function(g){
-            g.kink.values[g.fi] = store.ratings[ratingKey(g)] || 0;
+            g.kink.values[g.fi] = storedRating(store, g, merged);
             paint(g);
         });
         updateTally();
@@ -284,8 +293,9 @@
 
     function checkLink(){
         var store = $remember.checked && readStore();
+        var merged = Kinklist.mergedKeys($listType.value);
         viewingLink = !!store && location.hash.length > 10 && groups.some(function(g){
-            return g.kink.values[g.fi] !== (store.ratings[ratingKey(g)] || 0);
+            return g.kink.values[g.fi] !== storedRating(store, g, merged);
         });
         byId('LinkNotice').hidden = !viewingLink;
     }

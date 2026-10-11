@@ -195,6 +195,26 @@ var Kinklist = (function(){
         return entries;
     }
 
+    // Removed duplicates: give their rating to the item that replaced them, unless that one is rated
+    function mergeValues(values, listName){
+        var pairs = (typeof KinklistMerge !== 'undefined' && KinklistMerge[listName]) || [];
+        pairs.forEach(function(pair){
+            if(!values[pair[1]] && values[pair[0]]) values[pair[1]] = values[pair[0]];
+        });
+        return values;
+    }
+
+    // The same, for ratings remembered by name: { kept item's key: [removed items' keys] }
+    function mergedKeys(listName){
+        var pairs = (typeof KinklistMerge !== 'undefined' && KinklistMerge[listName]) || [];
+        var order = (typeof KinklistOrder !== 'undefined' && KinklistOrder[listName]) || [];
+        var out = {};
+        pairs.forEach(function(pair){
+            (out[order[pair[1]]] = out[order[pair[1]]] || []).push(order[pair[0]]);
+        });
+        return out;
+    }
+
     return {
         LEVELS: LEVELS,
         LISTS: LISTS,
@@ -204,6 +224,8 @@ var Kinklist = (function(){
         encode: encode,
         decode: decode,
         validHash: validHash,
+        mergeValues: mergeValues,
+        mergedKeys: mergedKeys,
         slots: slots,
         compare: compare
     };

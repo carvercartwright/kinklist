@@ -1,0 +1,23 @@
+# Duplicates that were removed, and the item that replaces each.
+# list | removed category | removed item => kept category | kept item
+# A rating given to the removed item carries over when the kept item has none.
+
+plsno | General | Leather => Clothing | Leather
+plsno | General | Biting => Pain | Biting
+plsno | General | Tickling => Touch & Stimulation | Tickling
+plsno | General | Transformation => General Surrealism | Transformation
+plsno | General | Socks/Stockings => Clothing | Stockings
+plsno | Ass play | Ass Worship => Touch & Stimulation | Ass worship
+plsno | Misc. Fetish | Double Penetration => Ass play | Double penetration
+plsno | Misc. Fetish | Foot Play => Touch & Stimulation | Foot play
+plsno | Oral Sex | Throat Penetration => Oral Sex | Deep throat
+plsno | BDSM & Related | Chastity => Restrictive | Chastity
+plsno | BDSM & Related | Gags => Restrictive | Gag
+plsno | BDSM & Related | Begging => Degradation | Begging
+plsno | BDSM & Related | Humiliation => Degradation | Humiliation
+plsno | BDSM & Related | Flogging/Whipping => Pain | Flogging
+plsno | BDSM & Related | Heavy/Extreme Bondage => Restrictive | Bondage (Heavy)
+plsno | BDSM & Related | Light/Medium Bondage => Restrictive | Bondage (Light)
+plsno | BDSM & Related | Wax Play => Pain | Hot Wax
+plsno | BDSM & Related | Discipline/Reinforcement => Domination | Discipline
+plsno | Pain | Breath Control => Misc. Fetish | Breath play
