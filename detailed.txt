@@ -11,11 +11,13 @@
 * Small cocks
 ? Expresses an interest in cocks that are below average size.
 * Large cocks
-? Expresses an interest in cocks taht are above average size.
+? Expresses an interest in cocks that are above average size.
 * Small butts
 ? Expresses an interest in butts that are particularly small.
 * Big Butts
 ? Expresses an interest in butts that are particularly large.
+* Tattoos
+? Expresses an interest in partners with tattoos.
 
 #Clothing
 (Self, Partner)
@@ -26,11 +28,11 @@
 * Stockings
 ? Expresses an interest in the inclusion of stockings in the sexual context of an RP, or an interest in characters wearing such.
 * Heels
-? Expresses an interest in the inclusion of high heeled shoes in the sexual context of an RP, or an interest in characters wearing such.
+? Expresses an interest in the inclusion of high-heeled shoes in the sexual context of an RP, or an interest in characters wearing such.
 * Leather
 ? Expresses an interest in the inclusion of leather clothing in the sexual context of an RP, or an interest in characters wearing such.
 * Latex
-? The usage of latex and/or rubber material worn as clothing
+? The usage of latex and/or rubber material worn as clothing.
 * Uniform / costume
 ? Expresses an interest in the inclusion of uniforms or costumes in the sexual context of an RP, or an interest in characters wearing such.
 * Cross-dressing
@@ -39,40 +41,54 @@
 #Roles & Groupings
 (Self, Partner)
 * as Male
+? Playing a male character.
 * as Female
+? Playing a female character.
 * as Femboy
+? Playing a male character who presents in a feminine way.
 * as Futa
+? Playing a character with a feminine body and a penis.
 * as MtF trans
+? Playing a trans woman.
 * as FtM trans
+? Playing a trans man.
 * as male & female
+? Playing a male and a female character in the same scene.
 * as multiple males
+? Playing several male characters in the same scene.
 * as multiple females
+? Playing several female characters in the same scene.
 * as multiple males & females
+? Playing several male and female characters in the same scene.
 * as Dominant
+? Taking the dominant role.
 * as Submissive
+? Taking the submissive role.
 * as Switch
+? Moving between the dominant and submissive roles.
 * as Celebrity
+? Playing a real-life celebrity.
 
 #General
 (Giving, Receiving)
 * Romance / Affection
-? Displaying or expressing love or strong affection, passion, either during love making or during normal scenes.
+? Displaying or expressing love or strong affection, passion, either during lovemaking or during normal scenes.
 * Handjob / Fingering
 ? Sexual stimulation by direct, physical contact of the hands or fingers to the genitals.
 * Blowjob
-? Sexual stimulation by direct, physical contact of the mouth or tongue to male genitals
+? Sexual stimulation by direct, physical contact of the mouth or tongue to male genitals.
 * Deep throat
 ? The act of penetrating the mouth of another character to the depths at which the penis or insertion enters the back of the mouth cavity and/or throat, sometimes causing a gag reflex, or being the recipient of such actions.
 * Swallowing
 ? The act of orally consuming semen, either directly or indirectly from a penis.
 * Facials
-? The act of cumming directly onto one's face
+? The act of cumming directly onto one's face.
 * Cunnilingus
-? Sexual stimulation by direct, physical contact of the mouth or tongue to female genitals
+? Sexual stimulation by direct, physical contact of the mouth or tongue to female genitals.
 * Face-sitting
-? A sexual practice where someone sits on another character's face with their buttocks or genitals, causing the person to be smothered, sometimes to the point asphyxiation; often done as form of forcing oral gratification.
+? A sexual practice where someone sits on another character's face with their buttocks or genitals, causing the person to be smothered, sometimes to the point of asphyxiation; often done as a form of forcing oral gratification.
 * Edging
-? Keeping on the edge of climax without orgasm
+? Keeping on the edge of climax without orgasm.
 * Teasing
 ? Refers to extended scenes of foreplay prior to explicit, sexual intercourse, which may be physical and/or verbal, typically to arouse one's partner to the point of sexual frustration or desperation.
 
@@ -81,7 +97,7 @@
 * Anal toys
 ? Refers to the inclusion of anal penetration with sex toys, including but not limited to dildos, vibrators, anal eggs, anal beads, etc.
 * Anal sex/pegging
-? Being penetrated by a partner, with a penis or strap-on
+? Being penetrated by a partner, with a penis or strap-on.
 * Rimming
 ? The act of giving oral stimulation to a partner's anus, by the means of licking and/or penetrating the recipient's anus with the tongue.
 * Double penetration
@@ -94,9 +110,9 @@
 * Gag
 ? The act of placing and lodging an object in another character's mouth to force him or her to breathe through his or her nose, as well as creating the inability to speak, or receiving such actions.
 * Collar
-? Wearing a collar around the neck
+? Wearing a collar around the neck.
 * Leash
-? Being lead around on a leash
+? Being led around on a leash.
 * Chastity
 ? Sexual abstinence, either willing or forced; this can include someone simply abstaining from sexual activity, or the wearing of a device that prevents it.
 * Bondage (Light)
@@ -104,31 +120,31 @@
 * Bondage (Heavy)
 ? The use of bondage that is extreme in either the position in which it causes the bound character to be in, the duration for which the character will be in bondage, the level of discomfort caused by the bondage or the amount of immobilization that will occur due to the bondage.
 * Encasement
-? one’s whole body being wrapped up like a mummy in a latex suit, sleepsack, or other fetish gear for the purposes of sexual gratification.
+? One’s whole body being wrapped up like a mummy in a latex suit, sleepsack, or other fetish gear for the purposes of sexual gratification.
 
 #Toys
 (Self, Partner)
 * Dildos
-? an object shaped like an erect penis used for sexual stimulation.
+? An object shaped like an erect penis used for sexual stimulation.
 * Plugs
-? a sex toy of a type designed to be inserted into the rectum.
+? A sex toy of a type designed to be inserted into the rectum.
 * Vibrators
-? a vibrating device used for sexual stimulation.
+? A vibrating device used for sexual stimulation.
 * Sounding
 ? The act of inserting metal rods into a male or female's urethra, or receiving such actions; technically implies rods that resonate and/or vibrate in response to a form of stimulation, but does not necessarily mean so.
 
 #Domination
 (As Dominant, As Submissive)
 * General Dom / General Sub
-? Catchall for Dominant/Submissive Activities.
+? Catchall for dominant/submissive activities.
 * Domestic servitude
 ? Being served by a butler, waitress, chauffeur, maid or housekeeper, or serving as one.
 * Slavery
-? Serving as the dominant's beck and call, or recieving such service, without choice.
+? Serving at the dominant's beck and call, or receiving such service, without choice.
 * Pet play
-? Petplay is a in role in which the focus is on the sub entering the altered mind space of a different species, often a dog, cat, or horse.
+? Pet play is a role in which the focus is on the sub entering the altered mind space of a different species, often a dog, cat, or horse.
 * DD/lg, MD/lb
-? Daddy or Mommy Dom/ Littly Girl or Boy. The daddy/mommy is the more dominant half of the relationship, the little is the more submissive.
+? Daddy or Mommy Dom / Little Girl or Boy. The daddy/mommy is the more dominant half of the relationship, the little is the more submissive.
 * Discipline
 ? The use of reinforcement (rewards and/or punishments) in order to train a submissive to obey the various commands of a master.
 * Begging
@@ -145,11 +161,11 @@
 #No consent
 (Aggressor, Target)
 * Dubious consent
-? situations where one partner's consent is in question, though not outright rape.
+? Situations where one partner's consent is in question, though not outright rape.
 * Non-con / rape
-? taking/being taken against one's will, often through force
+? Taking/being taken against one's will, often through force.
 * Blackmail / coercion
-? Refers to the inclusion of Coercion and/or Blackmail in the context of the story arc of an RP, often in the form of a semi-consensual means of receiving sex from a partner.
+? Refers to the inclusion of coercion and/or blackmail in the context of the story arc of an RP, often in the form of a semi-consensual means of receiving sex from a partner.
 * Kidnapping
 ? The act of abducting a character in an RP for the purpose of abusing, often sexually, or being abducted for such reasons; often implies indefinite imprisonment.
 * Drugs
@@ -157,14 +173,14 @@
 * Alcohol
 ? The use of alcohol in the context of an RP, typically to disorientate or otherwise mentally incapacitate a character, or to elevate the sensations of sex.
 * Sleep play
-? Engaging in sexual acts with an unconscious/asleep partner
+? Engaging in sexual acts with an unconscious/asleep partner.
 
 #Taboo
 (General)
 * Incest
-? Engaging in an RP in which at least two characters will be related
+? Engaging in an RP in which at least two characters will be related.
 * Age Gap
-? Refers to scenes in which there is a signifigant gap in the ages of characters.
+? Refers to scenes in which there is a significant gap in the ages of characters.
 * Interracial
 ? Scenes based on interracial interactions without relying on racial stereotypes.
 * Raceplay
@@ -183,19 +199,17 @@
 #Surrealism
 (Self, Partner)
 * Futanari/Futa
-? characters who have an overall feminine body, but have both female and male genitalia (although testicles are not always present)
+? Characters who have an overall feminine body, but have both female and male genitalia (although testicles are not always present).
 * Furry
 ? Anthropomorphic animal characters.
-* Vore
-? The act of physically consuming another character
 * Transformation
-? The act of causing the physical characteristics of a participant of an RP, possibly including one's self, by magical or chemical means, to change in a dramatic fashion; may refer to a myriad of different types of transformations, and connotates receiving sexual pleasure from the act of transformation itself.
+? The act of causing the physical characteristics of a participant of an RP, possibly including one's self, by magical or chemical means, to change in a dramatic fashion; may refer to a myriad of different types of transformations, and connotes receiving sexual pleasure from the act of transformation itself.
 * Tentacles
 ? Engaging in an RP in which self-sentient tentacles or tentacle-like appendages will penetrate a character; often implies multiple penetration.
 * Monster or Alien
-? Various types of monsters, Extraterrestrials, and aesthetically challenging characters.
+? Various types of monsters, extraterrestrials, and aesthetically challenging characters.
 * Ghost
-? The formerly living, not currently in posession of a body
+? The formerly living, not currently in possession of a body.
 
 #Fluids
 (General)
@@ -212,12 +226,12 @@
 * Cum play
 ? Any number of situations focused on playing with cum.
 * Saliva/Spit
-? Sexual play involving saliva or Spit
+? Sexual play involving saliva or spit.
 
 #Degradation
 (Giving, Receiving)
 * Glory hole
-? Servicing a partner or recieving service from a partner with a physical barrier between the participants
+? Servicing a partner or receiving service from a partner with a physical barrier between the participants.
 * Name calling
 ? Engaging in an RP in which one character will be called names, in an attempt to elicit either a response of sexual gratification from the emotions correlating to humiliation, or merely as a form of psychological domination or punishment.
 * Humiliation
@@ -247,14 +261,15 @@
 * Breath play
 ? A situation in which at least one character will have physical control over the breathing habits of another character, often by either intermittent choking and/or due to the penetration of the throat.
 * Impregnation
-? Impregnating a character
+? Impregnating a character.
 * Pregnancy
-? Fetishizing a pregnant character
+? Fetishizing a pregnant character.
 * Feminization
 ? Feminization is a type of role play that involves imposing traditionally female attributes onto a submissive male partner. It may also involve an adoption of traditionally feminine behaviors and mannerisms.
 * Cuckold / Cuckquean
 ? Refers to the act of a character who, within the confines of the RP world has been designated to be in a relationship, will have sexual interaction with a character other than the one who has been predetermined to be in a relationship, in the context of the RP.
 * Shaving
+? Shaving a partner's body hair, or being shaved, as part of play.
 
 #Pain
 (Giving, Receiving)
@@ -263,9 +278,9 @@
 * Heavy pain
 ? Refers to the inclusion of heavy physical pain due to acts which are directly sexual; typically rough or excessive penetrations. This is probably gonna leave a mark.
 * Nipple clamps
-? pressure device applied to nipples to create pain which produces pleasure.
+? Pressure device applied to nipples to create pain which produces pleasure.
 * Clothes pins
-? Pinching sking between the forks of a clothes pin
+? Pinching skin between the forks of a clothes pin.
 * Caning
 ? Caning is a technique used in BDSM in which the dominant repeatedly strikes the submissive with a long flexible cane, usually on the buttocks.
 * Flogging
@@ -273,20 +288,20 @@
 * Gagging / Choking
 ? Being made to gag or choke, either by objects inserted into the mouth or hands/objects around the neck.
 * Beating
-? Being struck with fists or other objects
+? Being struck with fists or other objects.
 * Spanking
 ? The act of striking the buttocks of another character, or being the recipient of such; often as a form of erotic foreplay or as punishment in a BDSM setting.
 * Cock/Pussy slapping
-? slapping the genitalia of your partner, or recieving such slaps
+? Slapping the genitalia of your partner, or receiving such slaps.
 * Cock/Pussy torture
-? Engaging in an RP in which at least one character's genitals will be given negative attention, the intent of which to be to cause physical pain.
+? Engaging in an RP in which at least one character's genitals will be given negative attention, the intent of which is to cause physical pain.
 * Hot Wax
 ? The act of using wax, typically hot candle wax, as a form of sexual stimulation and/or torture, or receiving such actions.
 * Scratching
 ? One character scratching another with their nails or claws, sometimes leaving marks; sometimes but not necessarily painful.
 * Biting
 ? The act of biting or being bitten; sometimes painful, sometimes playful.
-* Cutting 
+* Cutting
 ? The act of cutting a partner to cause pain in a sexual context.
 * Snuff
 ? Murdering a character as part of sex.
