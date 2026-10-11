@@ -204,14 +204,18 @@ button, select, input, textarea {
 /* The list */
 
 #InputList {
-	columns: 24rem auto;
-	column-gap: 3rem;
-	padding: 1.75rem clamp(1rem, 3vw, 2.5rem) 4rem;
+	columns: 27rem auto;
+	column-gap: 1.25rem;
+	padding: 1.5rem clamp(.5rem, 3vw, 2.5rem) 4rem;
 }
 
 .category {
 	break-inside: avoid;
-	margin: 0 0 2.25rem;
+	margin: 0 0 1.25rem;
+	padding: 1rem 1.1rem .8rem;
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: .9rem;
 }
 
 .category h2 {
@@ -246,7 +250,7 @@ button, select, input, textarea {
 	font-size: .875rem;
 }
 
-.row:hover { background: var(--surface) }
+.row:hover { background: var(--bg) }
 
 .group {
 	display: flex;
@@ -312,7 +316,14 @@ button, select, input, textarea {
 }
 
 @media (max-width: 30rem) {
+	:root {
+		--dot: 24px;
+		--dot-gap: 6px;
+	}
+
 	.masthead { padding-top: 1.25rem }
+
+	.category { padding: .85rem .75rem .6rem }
 
 	.actions { margin-left: 0 }
 
@@ -550,5 +561,12 @@ input[type="text"], textarea {
 	display: flex;
 	align-items: center;
 	gap: .35rem;
-	width: 9rem;
+	width: 11.5rem;
+}
+
+@media (max-width: 21.5rem) {
+	:root {
+		--dot: 22px;
+		--dot-gap: 5px;
+	}
 }

@@ -1,7 +1,7 @@
 (function(){
     'use strict';
 
-    var LEVELS = ['Not entered', 'Favorite', 'Like', 'Indifferent', 'Maybe', 'Limit'];
+    var LEVELS = ['Not entered', 'Favorite', 'Like', 'Indifferent', 'Maybe', 'Limit / Not interested'];
     var HASH_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.=+*^!@";
     var FONT = '"Bricolage Grotesque", system-ui, sans-serif';
 
@@ -574,13 +574,15 @@
         context.fillStyle = '#000000';
         context.fillText('Kinklist' + (name ? ' (' + name + ')' : ''), 5, 25);
 
-        // Legend
+        // Legend, right-aligned and spaced to fit each label
         context.font = "bold 13px " + FONT;
-        var legendX = width - 15 - (120 * LEVELS.length);
+        var legendWidths = LEVELS.map(function(label){ return 15 + context.measureText(label).width + 28; });
+        var legendX = width - 15 - legendWidths.reduce(function(sum, w){ return sum + w; }, 0) + 28;
         LEVELS.forEach(function(label, level){
-            drawCircle(context, legendX + (120 * level), 17, colors[level]);
+            drawCircle(context, legendX, 17, colors[level]);
             context.fillStyle = '#000000';
-            context.fillText(label, legendX + 15 + (level * 120), 22);
+            context.fillText(label, legendX + 15, 22);
+            legendX += legendWidths[level];
         });
 
         columns.forEach(function(column, i){
