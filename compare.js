@@ -11,6 +11,9 @@
     };
 
     var listName = new URLSearchParams(location.search).get('list') || 'classic';
+    // An edited list still uses the link positions of the list it started from
+    var baseName = new URLSearchParams(location.search).get('base') || listName;
+    var layout = { index: [], size: 0 };
     var cats = [];
     // Flat rating arrays for each side, read from #a=...&b=...
     var sides = { a: [], b: [] };
@@ -28,8 +31,7 @@
         location.hash.substring(1).split('&').forEach(function(part){
             hashes[part[0]] = part.substring(2);
         });
-        var expected = Kinklist.hashLength(Kinklist.count(cats));
-        if(!hashes.a || !hashes.b || hashes.a.length !== expected || hashes.b.length !== expected) {
+        if(!hashes.a || !hashes.b || !Kinklist.validHash(hashes.a, layout.size) || !Kinklist.validHash(hashes.b, layout.size)) {
             throw new Error("This comparison link is incomplete or was made for a different list. Go back to your list and use Compare again.");
         }
         return hashes;
@@ -61,7 +63,7 @@
     }
 
     function render(){
-        entries = Kinklist.compare(cats, sides.a, sides.b);
+        entries = Kinklist.compare(cats, sides.a, sides.b, layout.index);
 
         // Tabs, one per kind of match, each with its count
         var $tabs = byId('Tabs');
@@ -168,13 +170,14 @@
 
     loadList().then(function(text){
         cats = Kinklist.parseKinksText(text);
+        layout = Kinklist.slots(cats, baseName);
         var hashes = readHash();
         sides = { a: Kinklist.decode(hashes.a), b: Kinklist.decode(hashes.b) };
 
         byId('ListName').textContent = (Kinklist.LISTS[listName] || 'Edited') + ' list';
         byId('BackLink').href = 'index.html' + (Kinklist.LISTS[listName] && listName !== 'classic' ? '?list=' + listName : '') + '#' + hashes.a;
         // Start on the first group that has anything in it
-        var all = Kinklist.compare(cats, sides.a, sides.b);
+        var all = Kinklist.compare(cats, sides.a, sides.b, layout.index);
         var first = Kinklist.SECTIONS.find(function(section){
             return all.some(function(entry){ return entry.section === section.id; });
         });

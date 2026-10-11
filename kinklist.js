@@ -17,8 +17,10 @@
 
     // [{ name, fields: [], kinks: [{ name, desc, values: [], groups: [] }] }]
     var cats = [];
-    // Every rating control in hash order: { cat, kink, fi, node }
+    // Every rating control in display order: { cat, kink, fi, node, slot }
     var groups = [];
+    // Number of positions in a link for the current list
+    var linkSize = 0;
 
     var parseKinksText = Kinklist.parseKinksText;
 
@@ -113,6 +115,9 @@
             });
             $list.append($cat);
         });
+        var layout = Kinklist.slots(cats, $listType.value);
+        linkSize = layout.size;
+        groups.forEach(function(g, i){ g.slot = layout.index[i]; });
         updateTally();
     }
 
@@ -179,8 +184,16 @@
     var encode = Kinklist.encode;
     var decode = Kinklist.decode;
 
+    // Ratings laid out by link position
+    function linkValues(){
+        var values = [];
+        for(var i = 0; i < linkSize; i++) values.push(0);
+        groups.forEach(function(g){ values[g.slot] = g.kink.values[g.fi]; });
+        return values;
+    }
+
     function updateUrl(){
-        var values = groups.map(function(g){ return g.kink.values[g.fi]; });
+        var values = linkValues();
         var rated = values.some(Boolean);
         var url = location.pathname
                 + ($listType.value !== 'classic' ? '?list=' + $listType.value : '')
@@ -199,8 +212,8 @@
         if(hash.length < 10) return;
 
         var values = decode(hash);
-        groups.forEach(function(g, i){
-            g.kink.values[g.fi] = values[i] || 0;
+        groups.forEach(function(g){
+            g.kink.values[g.fi] = values[g.slot] || 0;
             paint(g);
         });
         updateTally();
@@ -648,7 +661,7 @@
         }
 
         var hash = text.substring(text.indexOf('#') + 1);
-        if(hash.length !== Kinklist.hashLength(groups.length)) {
+        if(!Kinklist.validHash(hash, linkSize)) {
             throw new Error("That link doesn't match this list. You both need to rate the same list.");
         }
         return hash;
@@ -671,10 +684,10 @@
             return;
         }
 
-        var mine = encode(groups.map(function(g){ return g.kink.values[g.fi]; }));
+        var mine = encode(linkValues());
         // An edited list is not in any link, so pass it to the new tab directly
         if(customText) sessionStorage.setItem('kinklist-compare-list', customText);
-        var url = 'compare.html?list=' + (customText ? 'custom' : $listType.value) + '#a=' + mine + '&b=' + theirs;
+        var url = 'compare.html?list=' + (customText ? 'custom&base=' + $listType.value : $listType.value) + '#a=' + mine + '&b=' + theirs;
         if(!window.open(url, '_blank')) location.href = url;
         $compare.close();
     });

@@ -111,6 +111,30 @@ var Kinklist = (function(){
         return Math.ceil(numValues / inputPow) * outputPow;
     }
 
+    // A link made before items were added is shorter; the missing ratings count as not entered
+    function validHash(hash, numValues){
+        return hash.length > 0 && hash.length % outputPow === 0 && hash.length <= hashLength(numValues);
+    }
+
+    // Where each rating sits in a link. Standard lists have fixed positions (kinklist-order.js) so
+    // adding, removing or moving items never changes what an existing link means; anything not
+    // listed there, such as items added with Edit list, goes after them in display order.
+    function slots(cats, listName){
+        var order = (typeof KinklistOrder !== 'undefined' && KinklistOrder[listName]) || [];
+        var known = new Map(order.map(function(key, i){ return [key, i]; }));
+        var next = order.length;
+        var index = [];
+        cats.forEach(function(cat){
+            cat.kinks.forEach(function(kink){
+                cat.fields.forEach(function(field){
+                    var key = [cat.name, kink.name, field].join('\n');
+                    index.push(known.has(key) ? known.get(key) : next++);
+                });
+            });
+        });
+        return { index: index, size: next };
+    }
+
     /* Comparing two people's ratings of the same list */
 
     // Field pairs where one person's first field lines up with the other's second
@@ -131,8 +155,8 @@ var Kinklist = (function(){
 
     function keen(value){ return value === 1 || value === 2; }
 
-    // mine and theirs are flat value arrays in hash order
-    function compare(cats, mine, theirs){
+    // mine and theirs are value arrays in link order; slot maps each rating, in display order, into them
+    function compare(cats, mine, theirs, slot){
         var entries = [];
         var index = 0;
 
@@ -147,8 +171,8 @@ var Kinklist = (function(){
                         cat: cat.name,
                         name: kink.name,
                         role: fields.length > 1 ? field : '',
-                        you: mine[index + fi] || 0,
-                        them: theirs[index + (mirrored ? 1 - fi : fi)] || 0
+                        you: mine[slot[index + fi]] || 0,
+                        them: theirs[slot[index + (mirrored ? 1 - fi : fi)]] || 0
                     };
                     if(selfFields) entry.role = (fi === 0) ? 'on you' : 'on them';
                     else if(mirrored) entry.role = 'you ' + field + ', they ' + fields[1 - fi];
@@ -179,7 +203,8 @@ var Kinklist = (function(){
         count: count,
         encode: encode,
         decode: decode,
-        hashLength: hashLength,
+        validHash: validHash,
+        slots: slots,
         compare: compare
     };
 })();
