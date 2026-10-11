@@ -6,11 +6,11 @@
 }
 
 :root {
-	--bg: #EDF1F8;
+	--bg: #F3F4F6;
 	--surface: #FFFFFF;
-	--ink: #0F1B33;
-	--muted: #56627A;
-	--line: #D2DAE8;
+	--ink: #16181D;
+	--muted: #5F6673;
+	--line: #D9DDE3;
 
 	/* Rating colours, shared with the exported image */
 	--lv0: #FFFFFF;
@@ -30,11 +30,11 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bg: #0C1424;
-		--surface: #162138;
-		--ink: #E8EEF9;
-		--muted: #93A1BC;
-		--line: #27365A;
+		--bg: #14161A;
+		--surface: #1F2228;
+		--ink: #ECEEF2;
+		--muted: #9AA1AD;
+		--line: #30353E;
 	}
 }
 
@@ -385,6 +385,78 @@ button, select, input, textarea {
 	.row { padding-block: .4rem }
 }
 
+.btn-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.35rem;
+	height: 2.35rem;
+	padding: 0;
+}
+
+#SettingsDialog { width: min(22rem, calc(100vw - 2rem)) }
+
+#SettingsDialog select { width: 100% }
+
+/* What is left to rate */
+
+.btn-small {
+	padding: .2em .85em;
+	font-size: .8125rem;
+}
+
+.btn:disabled {
+	opacity: .4;
+	cursor: default;
+}
+
+.btn[aria-pressed="true"] {
+	background: var(--ink);
+	color: var(--bg);
+}
+
+.left-count {
+	margin-left: .6rem;
+	padding: .15em .65em;
+	border-radius: 999px;
+	background: var(--ink);
+	color: var(--surface);
+	font-size: .75rem;
+	font-weight: 600;
+	letter-spacing: 0;
+	vertical-align: .2em;
+	white-space: nowrap;
+}
+
+.category.done .left-count {
+	background: transparent;
+	color: var(--muted);
+	box-shadow: inset 0 0 0 1px var(--line);
+}
+
+/* Unfinished rows carry a bar down the left edge */
+.row.todo { box-shadow: inset 3px 0 0 var(--ink) }
+
+/* Half-finished rows: ring the control that still needs an answer */
+.row.todo:has(.group.has-value) .group:not(.has-value) {
+	outline: 2px dashed var(--ink);
+	outline-offset: 3px;
+	border-radius: 999px;
+}
+
+.filtered { display: none }
+
+.row.flash { animation: flash 1.2s ease-out }
+
+@keyframes flash {
+	from { background: color-mix(in srgb, var(--lv3) 55%, transparent) }
+	to { background: transparent }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.row.flash { animation-duration: .01s }
+}
+
 /* Dialogs */
 
 dialog {
@@ -684,23 +756,23 @@ a.btn {
 	}
 }
 
-/* Colour schemes, chosen with the picker in the header. Midnight is the default above. */
+/* Colour schemes, chosen with the picker in the header. Slate is the default above. */
 
-[data-theme="slate"] {
-	--bg: #F3F4F6;
+[data-theme="midnight"] {
+	--bg: #EDF1F8;
 	--surface: #FFFFFF;
-	--ink: #16181D;
-	--muted: #5F6673;
-	--line: #D9DDE3;
+	--ink: #0F1B33;
+	--muted: #56627A;
+	--line: #D2DAE8;
 }
 
 @media (prefers-color-scheme: dark) {
-	[data-theme="slate"] {
-		--bg: #14161A;
-		--surface: #1F2228;
-		--ink: #ECEEF2;
-		--muted: #9AA1AD;
-		--line: #30353E;
+	[data-theme="midnight"] {
+		--bg: #0C1424;
+		--surface: #162138;
+		--ink: #E8EEF9;
+		--muted: #93A1BC;
+		--line: #27365A;
 	}
 }
 

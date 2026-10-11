@@ -57,10 +57,16 @@
     function render(){
         $list.textContent = '';
         groups = [];
+        byId('OnlyUnrated').setAttribute('aria-pressed', 'false');
+        byId('OnlyUnrated').textContent = 'Show only unrated';
 
         cats.forEach(function(cat){
             var $cat = el('section', 'category');
-            $cat.append(el('h2', '', cat.name));
+            var $heading = el('h2', '', cat.name);
+            cat.node = $cat;
+            cat.left = el('span', 'left-count');
+            $heading.append(cat.left);
+            $cat.append($heading);
 
             if(cat.fields.length > 1) {
                 var $fields = el('div', 'fields');
@@ -70,6 +76,7 @@
 
             cat.kinks.forEach(function(kink){
                 var $row = el('div', 'row');
+                kink.row = $row;
                 kink.groups = cat.fields.map(function(field, fi){
                     var $group = el('div', 'group');
                     $group.setAttribute('role', 'radiogroup');
@@ -149,7 +156,57 @@
             bars[i].style.flexGrow = counts[i + 1];
         }
         byId('TallyText').textContent = (groups.length - counts[0]) + ' of ' + groups.length + ' rated';
+
+        // Mark what is still unrated: a count on each section, and a flag on each unfinished row
+        cats.forEach(function(cat){
+            var left = 0;
+            cat.kinks.forEach(function(kink){
+                var missing = kink.values.filter(function(value){ return !value; }).length;
+                left += missing;
+                kink.row.classList.toggle('todo', missing > 0);
+            });
+            cat.left.textContent = left ? left + ' left' : 'Done';
+            cat.node.classList.toggle('done', !left);
+        });
+        byId('NextUnrated').disabled = !counts[0];
+        byId('OnlyUnrated').disabled = !counts[0] && byId('OnlyUnrated').getAttribute('aria-pressed') !== 'true';
     }
+
+    /* Finding what is left to rate */
+
+    var lastJump = null;
+
+    byId('NextUnrated').addEventListener('click', function(){
+        var rows = Array.from($list.querySelectorAll('.row.todo:not(.filtered)'));
+        if(!rows.length) return;
+        // The next unfinished row after the last one visited, in list order, wrapping at the end
+        var $row = rows.find(function(row){
+            return lastJump && (lastJump.compareDocumentPosition(row) & Node.DOCUMENT_POSITION_FOLLOWING);
+        }) || rows[0];
+        if(lastJump) lastJump.classList.remove('flash');
+        lastJump = $row;
+        $row.scrollIntoView({ block: 'center', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        $row.classList.remove('flash');
+        void $row.offsetWidth;
+        $row.classList.add('flash');
+        var $dot = $row.querySelector('.group:not(.has-value) .dot');
+        if($dot) $dot.focus({ preventScroll: true });
+    });
+
+    // Hides what was already finished when it was switched on, so a row does not vanish the moment it is rated
+    byId('OnlyUnrated').addEventListener('click', function(){
+        var on = this.getAttribute('aria-pressed') !== 'true';
+        this.setAttribute('aria-pressed', on);
+        this.textContent = on ? 'Show everything' : 'Show only unrated';
+        cats.forEach(function(cat){
+            cat.node.classList.toggle('filtered', on && cat.node.classList.contains('done'));
+            cat.kinks.forEach(function(kink){
+                kink.row.classList.toggle('filtered', on && !kink.row.classList.contains('todo'));
+            });
+        });
+        updateTally();
+        if(on) window.scrollTo({ top: 0 });
+    });
 
     $list.addEventListener('click', function(e){
         var $dot = e.target.closest('.dot');
@@ -326,11 +383,17 @@
         byId('RememberLabel').hidden = true;
     }
 
+    /* Settings */
+
+    var $settings = byId('SettingsDialog');
+    byId('Settings').addEventListener('click', function(){ $settings.showModal(); });
+    byId('SettingsClose').addEventListener('click', function(){ $settings.close(); });
+
     /* Colour scheme */
 
     var $theme = byId('Theme');
-    $theme.value = document.documentElement.dataset.theme || 'midnight';
-    if($theme.selectedIndex < 0) $theme.value = 'midnight';
+    $theme.value = document.documentElement.dataset.theme || 'slate';
+    if($theme.selectedIndex < 0) $theme.value = 'slate';
     $theme.addEventListener('change', function(){
         document.documentElement.dataset.theme = $theme.value;
         try {
