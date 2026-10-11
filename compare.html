@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Kinklist comparison</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light dark">
+        <meta name="robots" content="noindex">
+        <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='9' cy='9' r='6' fill='%233F9BFF'/%3E%3Ccircle cx='23' cy='9' r='6' fill='%2335C759'/%3E%3Ccircle cx='9' cy='23' r='6' fill='%23F28B2B'/%3E%3Ccircle cx='23' cy='23' r='6' fill='%23CF3030'/%3E%3C/svg%3E">
+        <link rel="preload" href="fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="kinklist.css">
+        <script src="kinklist-core.js" defer></script>
+        <script src="compare.js" defer></script>
+    </head>
+    <body class="compare-page">
+        <header class="masthead">
+            <h1>Side by side</h1>
+            <p><span id="ListName"></span>. Your ratings next to your partner's, with giving matched to receiving. Nothing here is uploaded.</p>
+            <div class="actions">
+                <a id="BackLink" class="btn" href="index.html">Back to my list</a>
+                <button type="button" id="Swap" class="btn">Swap sides</button>
+                <button type="button" id="CopyLink" class="btn">Copy link</button>
+                <button type="button" id="CopyMarkdown" class="btn">Copy as Markdown</button>
+                <button type="button" id="SaveMarkdown" class="btn">Save Markdown file</button>
+            </div>
+        </header>
+
+        <p class="problem" id="Problem" role="alert" hidden></p>
+
+        <div id="Comparison">
+            <div class="key">
+                <div class="tabs" id="Tabs"></div>
+            </div>
+            <main id="Results"></main>
+        </div>
+    </body>
+</html>

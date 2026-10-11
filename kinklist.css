@@ -545,7 +545,7 @@ input[type="text"], textarea {
 
 /* Compare */
 
-#CompareDialog { width: min(46rem, calc(100vw - 2rem)) }
+#CompareDialog { width: min(36rem, calc(100vw - 2rem)) }
 
 .compare-form {
 	display: flex;
@@ -554,48 +554,127 @@ input[type="text"], textarea {
 
 .compare-form input { flex: 1 }
 
-#CompareResults h3 {
-	margin: 1.5rem 0 .4rem;
-	font-size: 1.125rem;
-	font-weight: 700;
+a.btn {
+	color: inherit;
+	text-decoration: none;
 }
 
-.compare-list {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	font-size: .875rem;
-}
-
-.compare-list li {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: .15rem 1rem;
-	padding: .35rem 0;
-	border-top: 1px solid var(--line);
-}
-
-.compare-list li.clash .compare-name { color: var(--lv5) }
-
-.compare-name {
-	flex: 1;
-	min-width: 12rem;
+.problem {
+	margin: 1rem clamp(1rem, 3vw, 2.5rem);
+	max-width: 60ch;
 	font-weight: 600;
 }
 
-.compare-name small {
-	margin-left: .5rem;
+.tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .4rem;
+}
+
+.tab {
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	padding: .35em .5em .35em .95em;
+	border: 1.5px solid var(--line);
+	border-radius: 999px;
+	background: transparent;
+	font-size: .875rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.tab:hover { border-color: var(--muted) }
+
+.tab[aria-pressed="true"] {
+	border-color: var(--ink);
+	background: var(--ink);
+	color: var(--bg);
+}
+
+.tab-count {
+	min-width: 1.6em;
+	padding: 0 .45em;
+	border-radius: 999px;
+	background: var(--line);
+	color: var(--ink);
+	font-size: .75rem;
+	font-variant-numeric: tabular-nums;
+	text-align: center;
+}
+
+#Results {
+	columns: 34rem auto;
+	column-gap: 1.25rem;
+	padding: 1.5rem clamp(.5rem, 3vw, 2.5rem) 4rem;
+}
+
+.empty {
+	margin: 0;
+	color: var(--muted);
+}
+
+/* One row per item: its name, then the two ratings in fixed columns */
+.pair, .pair-head {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 10.5rem 10.5rem;
+	align-items: center;
+	gap: .1rem 1rem;
+}
+
+.pair-head {
+	margin-bottom: .2rem;
+	font-size: .75rem;
+	color: var(--muted);
+}
+
+.pair {
+	padding: .35rem 0;
+	border-top: 1px solid var(--line);
+	font-size: .875rem;
+}
+
+.pair-name { font-weight: 600 }
+
+.pair-name small {
+	display: block;
 	font-size: .75rem;
 	font-weight: 400;
 	color: var(--muted);
 }
 
+.pair-name .clash-note {
+	color: var(--lv5);
+	font-weight: 600;
+}
+
 .rating {
 	display: flex;
 	align-items: center;
-	gap: .35rem;
-	width: 11.5rem;
+	gap: .4rem;
+}
+
+@media (max-width: 40rem) {
+	.pair-head { display: none }
+
+	/* Six stacked tabs are too tall to pin on a phone */
+	.compare-page .key { position: static }
+
+	.pair { grid-template-columns: 1fr 1fr }
+
+	.pair-name { grid-column: 1 / -1 }
+
+	.rating {
+		flex-wrap: wrap;
+		font-size: .8125rem;
+	}
+
+	.rating::before {
+		content: attr(data-who);
+		flex-basis: 100%;
+		font-size: .6875rem;
+		color: var(--muted);
+	}
 }
 
 @media (max-width: 21.5rem) {

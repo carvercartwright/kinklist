@@ -1,8 +1,7 @@
 (function(){
     'use strict';
 
-    var LEVELS = ['Not entered', 'Favorite', 'Like', 'Indifferent', 'Maybe', 'Limit / Not interested'];
-    var HASH_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.=+*^!@";
+    var LEVELS = Kinklist.LEVELS;
     var FONT = '"Bricolage Grotesque", system-ui, sans-serif';
 
     var byId = function(id){ return document.getElementById(id); };
@@ -21,54 +20,7 @@
     // Every rating control in hash order: { cat, kink, fi, node }
     var groups = [];
 
-    /* Parsing */
-
-    function parseKinksText(text){
-        var byName = new Map();
-        var cat = null;
-        var kink = null;
-        var close = function(){
-            if(!cat) return;
-            if(!cat.fields.length) throw new Error(cat.name + ' does not have any fields defined.');
-            if(!cat.kinks.length) throw new Error(cat.name + ' does not have any kinks listed.');
-            byName.set(cat.name, cat);
-        };
-
-        text.replace(/\r/g, '').split('\n').forEach(function(line){
-            line = line.trim();
-            if(!line) return;
-
-            var rest = line.substring(1).trim();
-            if(line[0] === '#') {
-                close();
-                cat = rest ? { name: rest, fields: [], kinks: [] } : null;
-                kink = null;
-            }
-            else if(!cat) return;
-            else if(line[0] === '(') {
-                cat.fields = rest.replace(/\)$/, '').split(',')
-                        .map(function(field){ return field.trim(); })
-                        .filter(Boolean);
-            }
-            else if(line[0] === '*') {
-                kink = { name: rest, desc: '' };
-                cat.kinks.push(kink);
-            }
-            else if(line[0] === '?' && kink) {
-                kink.desc = rest;
-            }
-        });
-        close();
-
-        if(!byName.size) throw new Error('The list needs at least one category.');
-        var parsed = Array.from(byName.values());
-        parsed.forEach(function(cat){
-            cat.kinks.forEach(function(kink){
-                kink.values = cat.fields.map(function(){ return 0; });
-            });
-        });
-        return parsed;
-    }
+    var parseKinksText = Kinklist.parseKinksText;
 
     function listToText(){
         return cats.map(function(cat){
@@ -224,49 +176,8 @@
 
     /* Link: ratings are packed into the URL hash */
 
-    function maxPow(base, maxVal){
-        var maxPow = 1;
-        for(var pow = 1; Math.pow(base, pow) <= maxVal; pow++){
-            maxPow = pow;
-        }
-        return maxPow;
-    }
-    var hashBase = HASH_CHARS.length;
-    var outputPow = maxPow(hashBase, Number.MAX_SAFE_INTEGER);
-    var inputPow = maxPow(LEVELS.length, Math.pow(hashBase, outputPow));
-
-    function encode(values){
-        var output = "";
-        for(var start = 0; start < values.length; start += inputPow) {
-            var chunkInt = 0;
-            for(var pow = 0; pow < inputPow && start + pow < values.length; pow++) {
-                chunkInt += values[start + pow] * Math.pow(LEVELS.length, pow);
-            }
-            var chunk = "";
-            for(var i = 0; i < outputPow; i++) {
-                chunk = HASH_CHARS[chunkInt % hashBase] + chunk;
-                chunkInt = Math.floor(chunkInt / hashBase);
-            }
-            output += chunk;
-        }
-        return output;
-    }
-
-    function decode(hash){
-        var values = [];
-        for(var start = 0; start < hash.length; start += outputPow) {
-            var chunk = hash.substring(start, start + outputPow);
-            var chunkInt = 0;
-            for(var i = 0; i < chunk.length; i++) {
-                chunkInt = (chunkInt * hashBase) + Math.max(0, HASH_CHARS.indexOf(chunk[i]));
-            }
-            for(var pow = 0; pow < inputPow; pow++) {
-                values.push(chunkInt % LEVELS.length);
-                chunkInt = Math.floor(chunkInt / LEVELS.length);
-            }
-        }
-        return values;
-    }
+    var encode = Kinklist.encode;
+    var decode = Kinklist.decode;
 
     function updateUrl(){
         var values = groups.map(function(g){ return g.kink.values[g.fi]; });
@@ -697,146 +608,25 @@
         }, 'image/png');
     }
 
-    /* Compare with a partner's link */
+    /* Compare: check the partner's link, then hand both sets of ratings to the comparison page */
 
-    // Field pairs where one person's first field lines up with the other's second
-    var MIRRORED_FIELDS = [
-        'self|partner', 'giving|receiving', 'as dominant|as submissive',
-        'as dom|as sub', 'aggressor|target', 'actor|subject', 'being center|participating',
-        'on self|on others'
-    ];
-    // These two read better from one side: "on you" already means "on their partner"
-    var SELF_FIELDS = ['self|partner', 'on self|on others'];
-    var COMPARE_SECTIONS = [
-        { id: 'both', title: 'You both want this' },
-        { id: 'talk', title: 'One of you is keen, the other is open' },
-        { id: 'open', title: 'Open on both sides' },
-        { id: 'limit', title: 'A limit for one of you' }
-    ];
     var $compare = byId('CompareDialog');
-    var comparison = null;
 
-    function parsePartnerLink(text){
+    function partnerHash(text){
         text = text.trim();
         if(!text) throw new Error("Paste your partner's link first.");
 
         var list = (text.match(/[?&]list=([^&#]+)/) || [])[1] || 'classic';
         if(text.indexOf('#') >= 0 && list !== $listType.value) {
-            var $option = $listType.querySelector('option[value="' + CSS.escape(list) + '"]');
-            throw new Error('That link is for the ' + ($option ? $option.textContent : list)
+            throw new Error('That link is for the ' + (Kinklist.LISTS[list] || list)
                     + ' list. Switch to it with the list picker, then compare again.');
         }
 
         var hash = text.substring(text.indexOf('#') + 1);
-        if(hash.length !== Math.ceil(groups.length / inputPow) * outputPow) {
+        if(hash.length !== Kinklist.hashLength(groups.length)) {
             throw new Error("That link doesn't match this list. You both need to rate the same list.");
         }
-        return decode(hash);
-    }
-
-    function compareWith(theirs){
-        var result = { sections: {}, unrated: 0 };
-        COMPARE_SECTIONS.forEach(function(section){ result.sections[section.id] = []; });
-
-        var add = function(kink, mine, theirGroup, role){
-            var entry = { name: kink.name, role: role, you: mine, them: theirs[theirGroup.index] || 0 };
-            var keen = function(value){ return value === 1 || value === 2; };
-            var open = function(value){ return value === 3 || value === 4; };
-
-            if(!entry.you && !entry.them) return;
-            if(entry.you === 5 || entry.them === 5) {
-                // The other person wanting it is the conversation that matters most
-                entry.clash = keen(entry.you) || keen(entry.them);
-                result.sections.limit.push(entry);
-            }
-            else if(!entry.you || !entry.them) result.unrated++;
-            else if(keen(entry.you) && keen(entry.them)) result.sections.both.push(entry);
-            else if(keen(entry.you) || keen(entry.them)) result.sections.talk.push(entry);
-            else if(open(entry.you) && open(entry.them)) result.sections.open.push(entry);
-        };
-
-        cats.forEach(function(cat){
-            var fields = cat.fields.map(function(field){ return field.toLowerCase(); });
-            var mirrored = MIRRORED_FIELDS.indexOf(fields.join('|')) >= 0;
-            var selfFields = SELF_FIELDS.indexOf(fields.join('|')) >= 0;
-            cat.kinks.forEach(function(kink){
-                kink.groups.forEach(function(group, fi){
-                    if(selfFields) {
-                        add(kink, kink.values[fi], kink.groups[1 - fi], fi === 0 ? 'on you' : 'on them');
-                    }
-                    else if(mirrored) {
-                        add(kink, kink.values[fi], kink.groups[1 - fi], 'you ' + fields[fi] + ', they ' + fields[1 - fi]);
-                    }
-                    else {
-                        add(kink, kink.values[fi], group, fields.length > 1 ? fields[fi] : '');
-                    }
-                });
-            });
-        });
-
-        Object.keys(result.sections).forEach(function(id){
-            result.sections[id].sort(function(a, b){
-                return (b.clash || 0) - (a.clash || 0) || (a.you + a.them) - (b.you + b.them);
-            });
-        });
-        return result;
-    }
-
-    function comparisonToMarkdown(){
-        var lines = ['# Kinklist comparison', '', 'List: ' + $listType.selectedOptions[0].textContent];
-        COMPARE_SECTIONS.forEach(function(section){
-            var entries = comparison.sections[section.id];
-            if(!entries.length) return;
-            lines.push('', '## ' + section.title + ' (' + entries.length + ')', '');
-            entries.forEach(function(entry){
-                lines.push('- **' + entry.name + '**' + (entry.role ? ' (' + entry.role + ')' : '')
-                        + ': you ' + LEVELS[entry.you] + ', they ' + LEVELS[entry.them]
-                        + (entry.clash ? ' (one wants it, one will not)' : ''));
-            });
-        });
-        if(comparison.unrated) {
-            lines.push('', comparison.unrated + ' more rated by only one of you.');
-        }
-        return lines.join('\n') + '\n';
-    }
-
-    function renderComparison(){
-        var $results = byId('CompareResults');
-        $results.textContent = '';
-
-        var rating = function(who, value){
-            var $rating = el('span', 'rating');
-            var $swatch = el('span', 'swatch');
-            $swatch.dataset.level = value;
-            $rating.append($swatch, who + ' ' + LEVELS[value].toLowerCase());
-            return $rating;
-        };
-
-        var total = 0;
-        COMPARE_SECTIONS.forEach(function(section){
-            var entries = comparison.sections[section.id];
-            if(!entries.length) return;
-            total += entries.length;
-
-            $results.append(el('h3', '', section.title + ' (' + entries.length + ')'));
-            var $ul = el('ul', 'compare-list');
-            entries.forEach(function(entry){
-                var $li = el('li', entry.clash ? 'clash' : '');
-                var $what = el('span', 'compare-name', entry.name);
-                if(entry.role) $what.append(el('small', '', entry.role));
-                $li.append($what, rating('You', entry.you), rating('They', entry.them));
-                $ul.append($li);
-            });
-            $results.append($ul);
-        });
-
-        if(!total) {
-            $results.append(el('p', '', 'Nothing to compare yet. Rate some items on both lists first.'));
-        }
-        if(comparison.unrated) {
-            $results.append(el('p', '', comparison.unrated + ' more rated by only one of you.'));
-        }
-        byId('CompareExport').hidden = !total;
+        return hash;
     }
 
     byId('Compare').addEventListener('click', function(){
@@ -847,37 +637,22 @@
     byId('CompareForm').addEventListener('submit', function(e){
         e.preventDefault();
         byId('CompareError').textContent = '';
+        var theirs;
         try {
-            comparison = compareWith(parsePartnerLink(byId('CompareLink').value));
+            theirs = partnerHash(byId('CompareLink').value);
         }
         catch(err) {
             byId('CompareError').textContent = err.message;
             return;
         }
-        renderComparison();
-    });
-    byId('CompareCopy').addEventListener('click', function(){
-        var $btn = this;
-        var markdown = comparisonToMarkdown();
-        var done = function(){
-            $btn.textContent = 'Copied';
-            setTimeout(function(){ $btn.textContent = 'Copy as Markdown'; }, 2000);
-        };
-        if(navigator.clipboard) navigator.clipboard.writeText(markdown).then(done, function(){ downloadText(markdown); });
-        else downloadText(markdown);
-    });
-    byId('CompareSave').addEventListener('click', function(){ downloadText(comparisonToMarkdown()); });
 
-    function downloadText(text){
-        var url = URL.createObjectURL(new Blob([text], { type: 'text/markdown' }));
-        var $link = el('a');
-        $link.href = url;
-        $link.download = 'kinklist-comparison.md';
-        document.body.append($link);
-        $link.click();
-        $link.remove();
-        setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
-    }
+        var mine = encode(groups.map(function(g){ return g.kink.values[g.fi]; }));
+        // An edited list is not in any link, so pass it to the new tab directly
+        if(customText) sessionStorage.setItem('kinklist-compare-list', customText);
+        var url = 'compare.html?list=' + (customText ? 'custom' : $listType.value) + '#a=' + mine + '&b=' + theirs;
+        if(!window.open(url, '_blank')) location.href = url;
+        $compare.close();
+    });
 
     /* Start */
 
