@@ -254,6 +254,7 @@
         });
         store.list = $listType.value;
         store.custom = customText;
+        store.theme = document.documentElement.dataset.theme || null;
         try {
             localStorage.setItem(STORE_KEY, JSON.stringify(store));
         }
@@ -301,6 +302,20 @@
     catch(e) {
         byId('RememberLabel').hidden = true;
     }
+
+    /* Colour scheme */
+
+    var $theme = byId('Theme');
+    $theme.value = document.documentElement.dataset.theme || 'midnight';
+    if($theme.selectedIndex < 0) $theme.value = 'midnight';
+    $theme.addEventListener('change', function(){
+        document.documentElement.dataset.theme = $theme.value;
+        try {
+            sessionStorage.setItem('kinklist-theme', $theme.value);
+        }
+        catch(e) {}
+        saveStore();
+    });
 
     /* Choosing a list */
 

@@ -9,11 +9,14 @@
         <link rel="preload" href="fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
         <link rel="stylesheet" href="kinklist.css">
         <script>
-            // Colour scheme on trial: ?theme=name, kept for this tab
+            // Colour scheme: this tab's choice, or the remembered one if Remember on this device is on
             (function(){
                 var theme = new URLSearchParams(location.search).get('theme');
-                if(theme) sessionStorage.setItem('kinklist-theme', theme);
-                theme = sessionStorage.getItem('kinklist-theme');
+                try {
+                    if(theme) sessionStorage.setItem('kinklist-theme', theme);
+                    theme = sessionStorage.getItem('kinklist-theme') || (JSON.parse(localStorage.getItem('kinklist')) || {}).theme;
+                }
+                catch(e) {}
                 if(theme) document.documentElement.dataset.theme = theme;
             })();
         </script>
@@ -31,6 +34,17 @@
                         <option value="classic">Classic</option>
                         <option value="detailed">Detailed</option>
                         <option value="plsno">Please Don't</option>
+                    </select>
+                </label>
+                <label class="list-picker">
+                    <span class="visually-hidden">Color scheme</span>
+                    <select id="Theme">
+                        <option value="midnight">Midnight</option>
+                        <option value="slate">Slate</option>
+                        <option value="sand">Sand</option>
+                        <option value="rose">Rose</option>
+                        <option value="forest">Forest</option>
+                        <option value="plum">Plum</option>
                     </select>
                 </label>
                 <button type="button" id="Edit" class="btn">Edit list</button>

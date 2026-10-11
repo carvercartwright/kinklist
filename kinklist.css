@@ -6,11 +6,11 @@
 }
 
 :root {
-	--bg: #F3F0F6;
+	--bg: #EDF1F8;
 	--surface: #FFFFFF;
-	--ink: #221A2A;
-	--muted: #6C6076;
-	--line: #DCD5E3;
+	--ink: #0F1B33;
+	--muted: #56627A;
+	--line: #D2DAE8;
 
 	/* Rating colours, shared with the exported image */
 	--lv0: #FFFFFF;
@@ -30,11 +30,11 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bg: #1C1522;
-		--surface: #2A2033;
-		--ink: #EFE8F4;
-		--muted: #A698B3;
-		--line: #3D3149;
+		--bg: #0C1424;
+		--surface: #162138;
+		--ink: #E8EEF9;
+		--muted: #93A1BC;
+		--line: #27365A;
 	}
 }
 
@@ -684,7 +684,7 @@ a.btn {
 	}
 }
 
-/* Colour schemes on trial: add ?theme=name to the address */
+/* Colour schemes, chosen with the picker in the header. Midnight is the default above. */
 
 [data-theme="slate"] {
 	--bg: #F3F4F6;
@@ -701,24 +701,6 @@ a.btn {
 		--ink: #ECEEF2;
 		--muted: #9AA1AD;
 		--line: #30353E;
-	}
-}
-
-[data-theme="midnight"] {
-	--bg: #EDF1F8;
-	--surface: #FFFFFF;
-	--ink: #0F1B33;
-	--muted: #56627A;
-	--line: #D2DAE8;
-}
-
-@media (prefers-color-scheme: dark) {
-	[data-theme="midnight"] {
-		--bg: #0C1424;
-		--surface: #162138;
-		--ink: #E8EEF9;
-		--muted: #93A1BC;
-		--line: #27365A;
 	}
 }
 
@@ -773,5 +755,23 @@ a.btn {
 		--ink: #E6F0EA;
 		--muted: #94A89C;
 		--line: #2B3B32;
+	}
+}
+
+[data-theme="plum"] {
+	--bg: #F3F0F6;
+	--surface: #FFFFFF;
+	--ink: #221A2A;
+	--muted: #6C6076;
+	--line: #DCD5E3;
+}
+
+@media (prefers-color-scheme: dark) {
+	[data-theme="plum"] {
+		--bg: #1C1522;
+		--surface: #2A2033;
+		--ink: #EFE8F4;
+		--muted: #A698B3;
+		--line: #3D3149;
 	}
 }
