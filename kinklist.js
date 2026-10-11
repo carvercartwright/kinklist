@@ -38,8 +38,6 @@ var level = {};
 
 $(function(){
 
-    var imgurClientId = '9db53e5936cd02f';
-
     $("#listType").change(function() {
         fileToRead = $("#listType").val() + '.txt';
         $.get(fileToRead, function(data) {
@@ -174,7 +172,6 @@ $(function(){
 
             // Make export button work
             $('#Export').on('click', inputKinks.export);
-            $('#URL').on('click', function(){ this.select(); });
 
             // On resize, redo columns
             (function(){
@@ -295,14 +292,14 @@ $(function(){
         export: function(){
             var username = prompt("Please enter your name");
             if(typeof username !== 'string') return;
-            else if (username.length ) username = '(' + username + ')';
+            var filename = 'kinklist' + (username.length ? '-' + username.replace(/[^a-z0-9_-]+/gi, '_') : '') + '.png';
+            if (username.length ) username = '(' + username + ')';
 
             $('#Loading').fadeIn();
-            $('#URL').fadeOut();
 
             // Constants
             var numCols = 6;
-            var columnWidth = 250;
+            var minColumnWidth = 250;
             var simpleTitleHeight = 35;
             var titleSubtitleHeight = 50;
             var rowHeight = 25;
@@ -313,18 +310,31 @@ $(function(){
                 bottom: 10
             };
 
-            // Find out how many we have of everything
-            var numCats = $('.kinkCategory').length;
-            var dualCats = $('.kinkCategory th + th + th').length;
-            var simpleCats = numCats - dualCats;
-            var numKinks = $('.kinkRow').length;
+            // Determine the height required for all categories and kinks,
+            // and the column width required to fit the longest text
+            var measure = document.createElement('canvas').getContext('2d');
+            var columnWidth = minColumnWidth;
+            var totalHeight = 0;
+            var kinkCats = Object.keys(kinks);
+            for(var i = 0; i < kinkCats.length; i++){
+                var measureCat = kinks[kinkCats[i]];
+                var widths = [];
 
-            // Determine the height required for all categories and kinks
-            var totalHeight = (
-                    (numKinks * rowHeight) +
-                    (dualCats * titleSubtitleHeight) +
-                    (simpleCats * simpleTitleHeight)
-            );
+                measure.font = "bold 18px Arial";
+                widths.push(measure.measureText(kinkCats[i]).width);
+                if(measureCat.fields.length > 1) {
+                    measure.font = "italic 12px Arial";
+                    widths.push(measure.measureText(measureCat.fields.join(', ')).width);
+                }
+                measure.font = "12px Arial";
+                for(var j = 0; j < measureCat.kinks.length; j++){
+                    widths.push(5 + (measureCat.fields.length * 20) + measure.measureText(measureCat.kinks[j].kinkName).width);
+                }
+                columnWidth = Math.max(columnWidth, Math.ceil(Math.max.apply(null, widths)) + 10);
+
+                totalHeight += (measureCat.fields.length === 1) ? simpleTitleHeight : titleSubtitleHeight;
+                totalHeight += (measureCat.kinks.length * rowHeight);
+            }
 
             // Initialize columns and drawStacks
             var columns = [];
@@ -419,30 +429,19 @@ $(function(){
 
             //return $(canvas).insertBefore($('#InputList'));
 
-            // Send canvas to imgur
-            $.ajax({
-                url: 'https://api.imgur.com/3/image',
-                type: 'POST',
-                headers: {
-                    // Your application gets an imgurClientId from Imgur
-                    Authorization: 'Client-ID ' + imgurClientId,
-                    Accept: 'application/json'
-                },
-                data: {
-                    // convert the image data to base64
-                    image:  canvas.toDataURL().split(',')[1],
-                    type: 'base64'
-                },
-                success: function(result) {
-                    $('#Loading').hide();
-                    var url = 'https://i.imgur.com/' + result.data.id + '.png';
-                    $('#URL').val(url).fadeIn();
-                },
-                fail: function(){
-                    $('#Loading').hide();
-                    alert('Failed to upload to imgur, could not connect');
+            // Save canvas as a PNG download
+            canvas.toBlob(function(blob){
+                $('#Loading').hide();
+                if(!blob) {
+                    alert('Failed to export image');
+                    return;
                 }
-            });
+                var url = URL.createObjectURL(blob);
+                var $link = $('<a>').attr({ href: url, download: filename }).appendTo('body');
+                $link[0].click();
+                $link.remove();
+                setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+            }, 'image/png');
         },
         encode: function(base, input){
             var hashBase = inputKinks.hashChars.length;
