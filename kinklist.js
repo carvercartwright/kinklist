@@ -215,6 +215,13 @@
             var level = Number($dot.dataset.level);
             // Clicking the current rating clears it
             setValue(group, group.kink.values[group.fi] === level ? 0 : level);
+
+            // The description has done its job once a rating is picked
+            var $open = group.kink.row.querySelector('.desc:not([hidden])');
+            if($open && group.kink.values[group.fi]) {
+                $open.hidden = true;
+                group.kink.row.querySelector('.info').setAttribute('aria-expanded', 'false');
+            }
             return;
         }
 
