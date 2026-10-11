@@ -439,12 +439,15 @@ button, select, input, textarea {
 /* Unfinished rows carry a bar down the left edge */
 .row.todo { box-shadow: inset 3px 0 0 var(--ink) }
 
-/* Half-finished rows: ring the control that still needs an answer */
-.row.todo:has(.group.has-value) .group:not(.has-value) {
-	outline: 2px dashed var(--ink);
-	outline-offset: 3px;
+/* Once a section has been started, ring every control in it that still needs an answer */
+.category:has(.group.has-value) .group:not(.has-value) {
+	outline: 1.5px dashed var(--muted);
+	outline-offset: 1.5px;
 	border-radius: 999px;
 }
+
+/* The rings say it already, so the bar steps aside there */
+.category:has(.group.has-value) .row.todo { box-shadow: none }
 
 .filtered { display: none }
 
