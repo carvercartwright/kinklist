@@ -10,6 +10,7 @@
 To rename an item without losing its ratings in old links, pass the old and new keys:
     python tools/build.py --rename "classic|Pain|Hot Wax|Giving=classic|Pain|Hot oil / wax|Giving"
 """
+import hashlib
 import json
 import re
 import sys
@@ -119,6 +120,19 @@ def main():
     assert count == 1, "could not find the embedded list in index.html"
     page.write_text(new_html, encoding="utf-8", newline="\n")
     print("index.html: embedded list synced")
+
+    # Stamp each script and stylesheet address with a version taken from its contents,
+    # so a browser never pairs a new page with an old cached file.
+    def stamp(match):
+        data = (ROOT / match.group(2)).read_bytes().replace(b"\r\n", b"\n")
+        return match.group(1) + match.group(2) + "?v=" + hashlib.sha1(data).hexdigest()[:8] + '"'
+
+    for name in ("index.html", "compare.html"):
+        page = ROOT / name
+        html = page.read_text(encoding="utf-8")
+        html = re.sub(r'((?:src|href)=")(kinklist[\w-]*\.(?:js|css)|compare\.js)(?:\?v=\w+)?"', stamp, html)
+        page.write_text(html, encoding="utf-8", newline="\n")
+    print("asset versions stamped")
 
 
 if __name__ == "__main__":

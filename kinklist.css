@@ -386,13 +386,15 @@ button, select, input, textarea {
 }
 
 .btn-icon {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+	display: inline-grid;
+	place-items: center;
 	width: 2.35rem;
 	height: 2.35rem;
 	padding: 0;
+	line-height: 0;
 }
+
+.btn-icon svg { display: block }
 
 #SettingsDialog { width: min(22rem, calc(100vw - 2rem)) }
 
